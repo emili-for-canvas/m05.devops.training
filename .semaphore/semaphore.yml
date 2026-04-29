@@ -21,7 +21,7 @@ blocks:
           commands:
             - echo "JEBENI BUILD"
             - checkout
-            - 'docker build 1-deployment -t $DOCKERHUB_USERNAME/my-flask-image:latest'
+            - 'docker build 1-deployment -t $DOCKER_USERNAME/my-flask-image:latest'
             - docker push !$
   - name: "\U0001F680 Deploy"
     dependencies:
