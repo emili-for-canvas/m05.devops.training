@@ -27,14 +27,19 @@ blocks:
             - 'docker push $DOCKER_USERNAME/my-flask-image:latest'
       secrets:
         - name: dockerhub
-  - name: "\U0001F680 Deploy"
+  - name: KUBE
     dependencies:
       - BUILD
     task:
       jobs:
-        - name: "\U0001F4E6 Deploy to Production"
+        - name: KUBERNETES YAY
           commands:
-            - echo "Building application..."
-            - echo "Running security checks..."
-            - echo "Deploying to production..."
-            - echo "Deployment completed successfully!"
+            - checkout
+            - cd 1-deployment
+            - kubectl create namespace g3 || true
+            - kubectl config set-context --current --namespace=g3
+            - kubectl apply -f deployment.yml
+            - kubectl apply -f service.yml
+            - kubectl rollout status deployment/flask-app
+      secrets:
+        - name: kubeconfig
