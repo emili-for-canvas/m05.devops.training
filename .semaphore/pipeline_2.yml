@@ -1,0 +1,20 @@
+version: v1.0
+name: Pipeline 2
+agent:
+  machine:
+    type: f1-standard-4
+    os_image: ubuntu2404
+blocks:
+  - name: Deploy green
+    task:
+      jobs:
+        - name: Deploy green
+          commands:
+            - checkout
+            - cd 2-blue-green-deployment
+            - kubectl create namespace g3 || true
+            - kubectl config set-context --current --namespace=g3
+            - kubectl apply -f deployment-green.yml
+            - kubectl apply -f service-green.yml
+            - kubectl rollout status deployment/flask-app-green
+            - kubectl get svc flask-app

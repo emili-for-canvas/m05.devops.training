@@ -22,7 +22,8 @@ blocks:
             - echo "JEBENI BUILD"
             - checkout
             - 'echo "DOCKER_USERNAME: "$DOCKER_USERNAME'
-            - 'docker build 1-deployment -t $DOCKER_USERNAME/my-flask-image:latest'
+            - cd 2-blue-green-deployment
+            - 'docker build . -t $DOCKER_USERNAME/my-flask-image:latest'
             - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
             - 'docker push $DOCKER_USERNAME/my-flask-image:latest'
       secrets:
@@ -35,11 +36,15 @@ blocks:
         - name: KUBERNETES YAY
           commands:
             - checkout
-            - cd 1-deployment
+            - cd 2-blue-green-deployment
             - kubectl create namespace g3 || true
             - kubectl config set-context --current --namespace=g3
-            - kubectl apply -f deployment.yml
-            - kubectl apply -f service.yml
+            - kubectl apply -f deployment-blue.yml
+            - kubectl apply -f service-blue.yml
             - kubectl rollout status deployment/flask-app
+            - kubectl get svc flask-app
       secrets:
         - name: kubeconfig
+promotions:
+  - name: Promotion 1
+    pipeline_file: pipeline_2.yml
