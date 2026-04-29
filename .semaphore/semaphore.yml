@@ -13,19 +13,19 @@ auto_cancel:
   queued:
     when: branch = 'main'
 blocks:
-  - name: "\U0001F9EA Test"
+  - name: BUILD
     dependencies: []
     task:
       jobs:
-        - name: "\U0001F7E2 Run Tests"
+        - name: BUILD
           commands:
-            - echo "Checking out code..."
-            - echo "Installing dependencies..."
-            - echo "Running test suite..."
-            - echo "Tests completed successfully!"
+            - echo "JEBENI BUILD"
+            - checkout
+            - 'docker build 1-deployment -t $DOCKERHUB_USERNAME/my-flask-image:latest'
+            - docker push !$
   - name: "\U0001F680 Deploy"
     dependencies:
-      - "\U0001F9EA Test"
+      - BUILD
     task:
       jobs:
         - name: "\U0001F4E6 Deploy to Production"
