@@ -22,7 +22,7 @@ spec:
             - name: ENVIRONMENT
               value: production
             - name: GREETING
-              value: Hello from Kubernetes!
+              value: HELLO FROM EMILI
           ports:
             - containerPort: 4000
           readinessProbe:
