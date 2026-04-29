@@ -23,7 +23,7 @@ blocks:
             - checkout
             - 'echo "DOCKER_USERNAME: "$DOCKER_USERNAME'
             - 'docker build 1-deployment -t $DOCKER_USERNAME/my-flask-image:latest'
-            - docker push !$
+            - 'docker push $DOCKER_USERNAME/my-flask-image:latest'
       secrets:
         - name: dockerhub
   - name: "\U0001F680 Deploy"
